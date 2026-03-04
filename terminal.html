@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Terminal</title>
+<style>
+body { background:black; color:#00ff00; font-family:monospace; padding:20px; }
+#output { white-space: pre-wrap; margin-bottom:10px; }
+input { background:black; border:none; color:#00ff00; font-family:monospace; outline:none; width:100%; }
+</style>
+</head>
+<body>
+
+<div id="output"></div>
+<input id="input" autofocus />
+
+<script>
+let unlocked = false;
+
+const inputField = document.getElementById("input");
+const output = document.getElementById("output");
+
+inputField.addEventListener("keydown", async (e) => {
+  if (e.key === "Enter") {
+    const value = inputField.value;
+    inputField.value = "";
+
+    const res = await fetch(`/api/terminal?input=${encodeURIComponent(value)}&unlocked=${unlocked}`);
+    const data = await res.json();
+
+    unlocked = data.unlocked;
+    output.innerText += `> ${value}\n${data.output}\n\n`;
+  }
+});
+</script>
+
+</body>
+</html>
