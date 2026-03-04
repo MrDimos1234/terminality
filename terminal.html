@@ -1,38 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Terminal</title>
-<style>
-body { background:black; color:#00ff00; font-family:monospace; padding:20px; }
-#output { white-space: pre-wrap; margin-bottom:10px; }
-input { background:black; border:none; color:#00ff00; font-family:monospace; outline:none; width:100%; }
-</style>
+  <meta charset="UTF-8">
+  <title>Terminal</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div id="terminal">
+    <pre id="output">&gt; Enter key:</pre>
+    <input type="text" id="command" autofocus>
+  </div>
 
-<div id="output"></div>
-<input id="input" autofocus />
+  <script>
+    const input = document.getElementById('command');
+    const output = document.getElementById('output');
 
-<script>
-let unlocked = false;
+    input.addEventListener('keydown', async (e) => {
+      if (e.key === 'Enter') {
+        const cmd = input.value.trim();
+        input.value = '';
 
-const inputField = document.getElementById("input");
-const output = document.getElementById("output");
-
-inputField.addEventListener("keydown", async (e) => {
-  if (e.key === "Enter") {
-    const value = inputField.value;
-    inputField.value = "";
-
-    const res = await fetch(`/api/terminal?input=${encodeURIComponent(value)}&unlocked=${unlocked}`);
-    const data = await res.json();
-
-    unlocked = data.unlocked;
-    output.innerText += `> ${value}\n${data.output}\n\n`;
-  }
-});
-</script>
-
+        const res = await fetch('/api/terminal', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({command: cmd})
+        });
+        const text = await res.text();
+        output.textContent += '\n> ' + cmd + '\n' + text;
+        output.scrollTop = output.scrollHeight;
+      }
+    });
+  </script>
 </body>
 </html>
