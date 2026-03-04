@@ -1,45 +1,37 @@
 export default function handler(req, res) {
-  const { input, unlocked } = req.query;
+  if (req.method !== 'POST') {
+    return res.status(405).send('Method Not Allowed');
+  }
 
-  // STEP 1: Password gate
-  if (!unlocked) {
-    if (input === "book") {
-      return res.status(200).json({
-        unlocked: true,
-        output: `> access granted
+  const body = req.body;
+  const cmd = body.command;
+
+  const password = 'book';  // ONLY here, never in front-end
+
+  if (cmd === password) {
+    return res.status(200).send(
+      `> access granted
 > available commands:
 - page4.access.truth
 - help`
-      });
-    }
-
-    return res.status(200).json({
-      unlocked: false,
-      output: `> access denied`
-    });
+    );
   }
 
-  // STEP 2: After unlock
-  if (input === "help") {
-    return res.status(200).json({
-      unlocked: true,
-      output: `Available commands:
+  if (cmd === 'help') {
+    return res.status(200).send(
+      `Available commands:
 - page4.access.truth
 - help`
-    });
+    );
   }
 
-  if (input === "page4.access.truth") {
-    return res.status(200).json({
-      unlocked: true,
-      output: `> verifying Page 4...
+  if (cmd === 'page4.access.truth') {
+    return res.status(200).send(
+      `> verifying Page 4...
 > checksum: valid
-> download link: https://your-site.vercel.app/realPage4.png`
-    });
+> download link: https://yourdomain.com/page4.png`
+    );
   }
 
-  return res.status(200).json({
-    unlocked: true,
-    output: `> command not recognized`
-  });
+  return res.status(200).send('> command not recognized');
 }
