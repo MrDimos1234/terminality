@@ -1,0 +1,61 @@
+/* style.css */
+
+/* Body and general layout */
+body {
+  background-color: #000;
+  color: #0f0;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 16px;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Teaser / index page */
+.teaser {
+  text-align: center;
+  line-height: 1.5;
+}
+
+.teaser a {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  color: #0f0;
+  text-decoration: none;
+  border: 1px solid #0f0;
+}
+
+.teaser a:hover {
+  background-color: #0f0;
+  color: #000;
+  transition: 0.2s;
+}
+
+/* Terminal page */
+#terminal {
+  width: 80%;
+  max-width: 700px;
+}
+
+#output {
+  height: 300px;
+  overflow-y: auto;
+  border: 1px solid #0f0;
+  padding: 10px;
+  white-space: pre-wrap;
+  margin-bottom: 10px;
+}
+
+#command {
+  width: 100%;
+  padding: 8px;
+  background: #000;
+  color: #0f0;
+  border: 1px solid #0f0;
+  font-family: monospace;
+  font-size: 16px;
+}
